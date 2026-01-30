@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Properties>
+		<Property name="filename">./logs</Property>
+	</Properties>
+
+	<Appenders>
+		<!-- Console appender for standard output -->
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+			<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" />
+		</Console>
+
+		<!-- RollingFile appender for file logging -->
+		<RollingFile name="file"
+			fileName="${filename}/appLogs-${date:HH-mm-ss-yyyy-MM-dd}.log"
+			filePattern="${filename}/appLogs-${date:HH-mm-ss-yyyy-MM-dd}.log">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="5" />
+		</RollingFile>
+	</Appenders>
+
+	<Loggers>
+		<!-- Custom logger for event logging -->
+		<Logger name="StepDefinitions" level="info" additivity="false">
+			<AppenderRef ref="file" />
+			<AppenderRef ref="STDOUT" />
+		</Logger>
+
+		<!-- Root logger configuration -->
+		<Root level="error">
+			<AppenderRef ref="STDOUT" />
+			<AppenderRef ref="file" />
+		</Root>
+	</Loggers>
+</Configuration>
